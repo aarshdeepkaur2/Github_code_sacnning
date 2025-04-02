@@ -1,0 +1,22 @@
+name: Bandit Security Scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security_scan:
+    name: Run Bandit Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Bandit
+        uses: shundor/bandit-action@v1
+        with:
+          path: "."
+          level: high
+          confidence: high
+          exit_zero: true
