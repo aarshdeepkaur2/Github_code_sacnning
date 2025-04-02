@@ -1,22 +1,21 @@
 name: Bandit Security Scan
 
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
 
 jobs:
-  security_scan:
-    name: Run Bandit Security Scan
+  bandit_scan:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Bandit
-        uses: shundor/bandit-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true
+          python-version: '3.x'
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Security Scan
+        run: bandit -r . -ll
